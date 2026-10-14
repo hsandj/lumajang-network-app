@@ -26,6 +26,13 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Generate Complete Platform Scaffolding
+        run: |
+          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml
+          flutter create --org id.lumajangnetwork --project-name lumajang_network_app .
+          cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+        shell: bash
+
       - name: Install Dependencies
         run: flutter pub get
 
@@ -49,6 +56,13 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+
+      - name: Generate Complete iOS Platform Scaffolding
+        run: |
+          cp ios/Runner/Info.plist /tmp/Info.plist || true
+          flutter create --org id.lumajangnetwork --project-name lumajang_network_app .
+          cp /tmp/Info.plist ios/Runner/Info.plist || true
+        shell: bash
 
       - name: Install Dependencies
         run: flutter pub get
