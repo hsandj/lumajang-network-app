@@ -33,6 +33,7 @@ jobs:
           rm -rf android
           flutter create --org id.lumajangnetwork --project-name lumajang_network_app --platforms=android .
           cp /tmp/backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml || true
+          sed -i 's/minSdkVersion = flutter.minSdkVersion/minSdkVersion = 21/g' android/app/build.gradle || true
         shell: bash
 
       - name: Install Dependencies
