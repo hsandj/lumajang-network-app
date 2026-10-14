@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import '../config/app_config.dart';
 import 'offline_screen.dart';
 
@@ -51,23 +50,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   }
 
   void _initWebViewController() {
-    late final PlatformWebViewControllerCreationParams params;
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
-
-    final WebViewController controller = WebViewController.fromPlatformCreationParams(
-      params,
-      onPermissionRequest: (request) {
-        // Izinkan kamera dan media capture jika diminta web dashboard
-        request.grant();
-      },
-    );
+    final WebViewController controller = WebViewController();
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -92,7 +75,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
             });
           },
           onWebResourceError: (WebResourceError error) {
-            // Tangani error halaman utama
             if (error.isForMainFrame ?? true) {
               setState(() {
                 _hasError = true;
@@ -123,23 +105,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
               return NavigationDecision.prevent;
             }
 
-            // Jika domain diarahkan ke luar dari lumajangnetwork.id (misal payment gateway external)
-            if (!request.url.contains('lumajangnetwork.id') &&
-                (request.url.startsWith('http://') || request.url.startsWith('https://'))) {
-              // Izinkan untuk tetap dibuka atau bisa diarahkan ke browser eksternal
-              return NavigationDecision.navigate;
-            }
-
             return NavigationDecision.navigate;
           },
         ),
       );
 
-    // Konfigurasi khusus Android (File upload, DOM storage, mixed content)
+    // Konfigurasi khusus Android
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(false);
-      final androidController = controller.platform as AndroidWebViewController;
-      androidController.setMediaPlaybackRequiresUserGesture(false);
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
     }
 
     controller.loadRequest(Uri.parse(AppConfig.webUrl));
