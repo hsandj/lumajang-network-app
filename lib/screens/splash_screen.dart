@@ -3,7 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../config/app_config.dart';
-import 'webview_screen.dart';
+import 'native_login_screen.dart';
 import 'offline_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const WebViewScreen(),
+          pageBuilder: (_, __, ___) => const NativeLoginScreen(),
           transitionsBuilder: (_, animation, __, child) => FadeTransition(
             opacity: animation,
             child: child,
