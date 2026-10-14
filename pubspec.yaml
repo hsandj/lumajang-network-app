@@ -1,0 +1,35 @@
+name: lumajang_network_app
+description: "Aplikasi Mobile iOS & Android untuk ISP Billing & Operational Dashboard Lumajang Network."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # WebView untuk menampilkan portal web lumajangnetwork.id
+  webview_flutter: ^4.10.0
+  webview_flutter_android: ^3.16.9
+  webview_flutter_wkwebview: ^3.16.2
+  # Cek koneksi internet
+  connectivity_plus: ^6.1.1
+  # Membuka tautan eksternal (WhatsApp, Tel, Email, Payment App)
+  url_launcher: ^6.3.1
+  # Penanganan izin kamera & storage untuk upload/download file
+  permission_handler: ^11.3.1
+  # Animasi loading modern
+  flutter_spinkit: ^5.2.1
+  # Desain ikon material modern
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
