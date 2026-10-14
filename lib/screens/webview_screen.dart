@@ -174,7 +174,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvoked: (didPop) {
         if (!didPop) {
           _handleWillPop();
         }

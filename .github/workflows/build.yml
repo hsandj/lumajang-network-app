@@ -26,15 +26,20 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Generate Complete Platform Scaffolding
+      - name: Generate Complete Android Platform Scaffolding
         run: |
-          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml
-          flutter create --org id.lumajangnetwork --project-name lumajang_network_app .
-          cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+          mkdir -p /tmp/backup
+          cp android/app/src/main/AndroidManifest.xml /tmp/backup/AndroidManifest.xml || true
+          rm -rf android
+          flutter create --org id.lumajangnetwork --project-name lumajang_network_app --platforms=android .
+          cp /tmp/backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml || true
         shell: bash
 
       - name: Install Dependencies
         run: flutter pub get
+
+      - name: Verify Code
+        run: flutter analyze
 
       - name: Build APK (Release)
         run: flutter build apk --release
@@ -59,9 +64,11 @@ jobs:
 
       - name: Generate Complete iOS Platform Scaffolding
         run: |
-          cp ios/Runner/Info.plist /tmp/Info.plist || true
-          flutter create --org id.lumajangnetwork --project-name lumajang_network_app .
-          cp /tmp/Info.plist ios/Runner/Info.plist || true
+          mkdir -p /tmp/backup
+          cp ios/Runner/Info.plist /tmp/backup/Info.plist || true
+          rm -rf ios
+          flutter create --org id.lumajangnetwork --project-name lumajang_network_app --platforms=ios .
+          cp /tmp/backup/Info.plist ios/Runner/Info.plist || true
         shell: bash
 
       - name: Install Dependencies
